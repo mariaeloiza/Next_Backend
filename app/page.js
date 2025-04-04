@@ -7,6 +7,10 @@ export default function Home() {
 
     const [ produtos, alteraProdutos ] = useState([])
 
+    const [ nome, alteraNome ] = useState([])
+    const [ preco, alteraPreco ] = useState([])
+    const [ quantidade, alteraQuantidade ] = useState([])
+
     async function buscaTodos(){
         const response = await axios.get("http://localhost:3000/api/produtos")
         alteraProdutos( response.data )
@@ -20,7 +24,19 @@ export default function Home() {
 
     }
 
-    function InsereProduto(){
+    async function insereProduto(e){
+
+        e.preventDefault()
+
+        const obj = {
+            nome: nome,
+            preco: preco,
+            quantidade: quantidade
+        }
+
+        const response = await axios.post("http://localhost:3000/api/produtos", obj)
+        console.log(response)
+        buscaTodos()
 
     }
 
@@ -88,12 +104,12 @@ export default function Home() {
             <hr/>
             <h2>Cadastro</h2>
 
-            <form>
-                <label>Digite o nome do produto: <input/></label>
+            <form onSubmit={ (e)=> insereProduto(e) } >
+                <label>Digite o nome do produto: <input onChange={ (e)=> alteraNome(e.target.value) } /></label>
                 <br/>
-                <label>Digite o preço: <input/></label>
+                <label>Digite o preço: <input onChange={ (e)=> alteraPreco(e.target.value) } /></label>
                 <br/>
-                <label>Digite a quantidade: <input/></label>
+                <label>Digite a quantidade: <input onChange={ (e)=> alteraQuantidade(e.target.value) } /></label>
                 <br/>
                 <button>Salvar</button>
             </form>
