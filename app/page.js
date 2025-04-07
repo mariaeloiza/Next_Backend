@@ -11,13 +11,17 @@ export default function Home() {
     const [ preco, alteraPreco ] = useState([])
     const [ quantidade, alteraQuantidade ] = useState([])
 
+    const [ pesquisa, alteraPesquisa ] = useState("")
+
+
     async function buscaTodos(){
         const response = await axios.get("http://localhost:3000/api/produtos")
         alteraProdutos( response.data )
     }
 
-    function buscaPorId(){
-
+    async function buscaPorId( id ){
+        const response = await axios.get("http://localhost:3000/api/produtos/"+id)
+        alteraProdutos( response.data )
     }
 
     function buscaPorNome(){
@@ -114,7 +118,13 @@ export default function Home() {
                 <button>Salvar</button>
             </form>
 
-            <hr/>
+            <hr/><br/>
+
+            <p>Busca de produtos. Digite seu ID:</p>
+            <input onChange={ (e)=> alteraPesquisa(e.target.value) } />
+            <button onClick={ ()=> buscaPorId(pesquisa) } >Pesquisar</button>
+
+            <br/><br/><hr/>
 
             <h2>Listagem</h2>
 
